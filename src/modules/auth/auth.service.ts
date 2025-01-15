@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ResData } from 'lib/resData';
-import { JwtService } from './jwt.service';
+// import { JwtService } from './jwt.service';
 import { UserService } from '../user/user.service';
 import { Bcrypt } from 'lib/bcrypt';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const token = this.jwtService.generate({
+    const token = await this.jwtService.signAsync({
       id: foundUser.data.id,
       roles: foundUser.data.roles,
     });

@@ -6,6 +6,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { SequelizeConfigModule } from './modules/sequelize/sequelize-config.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { FileModule } from './modules/fileUpload/file.module';
 @Module({
   imports: [
     UserModule,
@@ -13,6 +14,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ProductModule,
     AuthModule,
     SequelizeConfigModule,
+    FileModule,
   ],
   controllers: [],
   providers: [

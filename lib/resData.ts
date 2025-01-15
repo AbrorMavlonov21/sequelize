@@ -1,4 +1,4 @@
-interface IMeta {
+export interface IMeta {
   statusCode: number;
   message: string;
   [key: string]: string | number | object;

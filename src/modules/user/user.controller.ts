@@ -16,8 +16,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from 'role/roles.decorator';
 import { Role } from 'role/role.enum';
-import { AuthGuard } from '../auth/auth.guard';
+// import { AuthGuard } from '../auth/auth.guard';
 import { RolesGuard } from 'role/roles.guard';
+import { JwtAuthGuard } from '../shared/jwt.guard';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +26,7 @@ export class UserController {
 
   @Post('create-sequlize')
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       const { meta } = await this.userService.findByLogin(createUserDto.login);
@@ -82,7 +83,7 @@ export class UserController {
 
   @Patch('update-sequlize/:id')
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,

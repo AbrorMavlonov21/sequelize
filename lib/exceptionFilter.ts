@@ -32,15 +32,28 @@ export class CatchEverythingFilter implements ExceptionFilter {
         : exception instanceof Error
           ? exception.message
           : 'Internal server error';
+    const formattedMessage =
+      typeof message === 'string'
+        ? message
+        : typeof message === 'object'
+          ? message
+          : 'Unknown error occurred';
 
     const responseBody = new ResData(httpStatus, 'An error occurred', null, {
-      message: typeof message === 'string' ? message : undefined,
-      ...(typeof message === 'object' ? message : {}),
+      message:
+        typeof formattedMessage === 'string' ? formattedMessage : undefined,
+      ...(typeof formattedMessage === 'object' ? formattedMessage : {}),
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(request),
     });
 
-    this.logger.error(`HTTP Status: ${httpStatus} Error Message: ${message}`);
+    this.logger.error(
+      `HTTP Status: ${httpStatus} Error Message: ${
+        typeof formattedMessage === 'string'
+          ? formattedMessage
+          : JSON.stringify(formattedMessage)
+      }`,
+    );
 
     httpAdapter.reply(response, responseBody, httpStatus);
   }
